@@ -1,6 +1,7 @@
 # Shopping Cart API:
 
-Routes for create:
+####Routes for create:
+
 POST /cart
 
 Payload:
@@ -33,15 +34,20 @@ Payload:
 }
 ```
 
-Routes for list:
+####Routes for list:
+
 GET /cart
 
-Routes for get:
+####Routes for get:
+
 GET /cart/{id}
 
-Routes for update:
+####Routes for update:
+
 PUT /cart/{id}
+
 Payload basically the same as for post
 
-Routes for delete:
+####Routes for delete:
+
 DELETE /cart/{id}
