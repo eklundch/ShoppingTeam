@@ -3,7 +3,8 @@
 Routes for create:
 POST /cart
 Payload:
-'''
+
+```
  "firstname": "Jane",
  "lastname": "Doe",
  "email": "jane.doe@mail.com", 
@@ -29,7 +30,7 @@ Payload:
    }
  }
 }
-'''
+```
 
 Routes for list:
 GET /cart
