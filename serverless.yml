@@ -1,0 +1,90 @@
+service: serverless-rest-api
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    migration:
+      dir: 
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:*:"
+functions:
+  create:
+    handler: cart/create.create
+    events:
+      - http:
+          path: cart
+          method: post
+          cors: true
+
+  list:
+    handler: cart/list.list
+    events:
+      - http:
+          path: cart
+          method: get
+          cors: true
+
+  get:
+    handler: cart/get.get
+    events:
+      - http:
+          path: cart/{id}
+          method: get
+          cors: true
+
+  update:
+    handler: cart/update.update
+    events:
+      - http:
+          path: cart/{id}
+          method: put
+          cors: true
+
+  delete:
+    handler: cart/delete.delete
+    events:
+      - http:
+          path: cart/{id}
+          method: delete
+          cors: true
+
+resources:
+  Resources:
+    cartDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'todos'
