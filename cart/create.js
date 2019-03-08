@@ -16,13 +16,13 @@ exports.create = (event,context,callback) => {
     callback(null, {
       statusCode: 400,
       headers: {'Content-Type': 'text/plain'},
-      body: 'Couldn\'t create the todo item.',
+      body: 'Error!',
     });
     return;
   }
 
   const params = {
-    TableName: 'todos',
+    TableName: process.env.DYNAMODB_TABLE,
     Item: {
       id: uuid.v1(),
       firstname: data.firstname,
@@ -43,7 +43,7 @@ exports.create = (event,context,callback) => {
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: 'Couldn\'t create the todo item.',
+        body: 'Couldn\'t write to db.',
       });
       return;
     }

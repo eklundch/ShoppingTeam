@@ -2,33 +2,23 @@ service: serverless-rest-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
-plugins:
-  - serverless-dynamodb-local
-  - serverless-offline
-
-custom:
-  dynamodb:
-    start:
-      port: 8000
-      inMemory: true
-      migrate: true
-    migration:
-      dir: 
-
 provider:
   name: aws
   runtime: nodejs8.10
+  stage: dev
+  region: us-east-1
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:DescribeTable
         - dynamodb:Query
         - dynamodb:Scan
         - dynamodb:GetItem
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:"
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 functions:
   create:
     handler: cart/create.create
@@ -72,7 +62,7 @@ functions:
 
 resources:
   Resources:
-    cartDynamoDbTable:
+    TodosDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
@@ -87,4 +77,4 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: 'todos'
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
