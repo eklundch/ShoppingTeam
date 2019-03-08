@@ -1,5 +1,7 @@
 # Shopping Cart API:
 
+### Base url: https://yxv1s6sl90.execute-api.us-east-1.amazonaws.com/dev/ 
+
 #### Routes for create:
 
 POST /cart
