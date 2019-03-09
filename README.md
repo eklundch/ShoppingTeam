@@ -34,7 +34,7 @@ GET /cart/{id}
 
 DELETE /cart/{id}
 
-#### Routes for update (use this to add items to the cart, the web app then checks that inventory ha enough quantity):
+#### Routes for update (use this to add item(s) to the cart, the web app then checks that inventory has enough quantity for each item):
 
 ### url: https://polar-brook-97640.herokuapp.com
 PUT /?id={id}
