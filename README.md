@@ -34,6 +34,14 @@ GET /cart/{id}
 
 DELETE /cart/{id}
 
+#### Routes for get invoice:
+
+GET /cart/confirmation/{id}
+
+or using the UI: [here](http://people.arcada.fi/~eklundch/Invoice/Invoice.html) 
+
+![UI](http://people.arcada.fi/~eklundch/Invoice/UI.PNG)
+
 #### Routes for update (use this to add item(s) to the cart, the web app then checks that inventory has enough quantity for each item):
 
 ### url: https://polar-brook-97640.herokuapp.com
@@ -42,9 +50,7 @@ PUT /?id={id}
 Payload:
 
 ```
-#### Routes for get invoice:
 
-GET /cart/confirmation/{id}
 
 PUT https://polar-brook-97640.herokuapp.com/?id=25e89380-4265-11e9-8f77-47777c52e5a8
 
