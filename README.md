@@ -42,6 +42,9 @@ PUT /?id={id}
 Payload:
 
 ```
+#### Routes for get invoice:
+
+GET /cart/confirmation/{id}
 
 PUT https://polar-brook-97640.herokuapp.com/?id=25e89380-4265-11e9-8f77-47777c52e5a8
 
@@ -62,4 +65,5 @@ PUT https://polar-brook-97640.herokuapp.com/?id=25e89380-4265-11e9-8f77-47777c52
   }
 
 ```
+
 
