@@ -28,7 +28,8 @@ exports.create = (event,context,callback) => {
       firstname: data.firstname,
       lastname: data.lastname,
       email: data.email,
-      items: data.items
+      items: data.items,
+      order_status: data.order_status,
       //checked: false,
       //createdAt: timestamp,
       //updatedAt: timestamp,

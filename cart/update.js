@@ -12,7 +12,7 @@ module.exports.update = (event, context, callback) => {
     callback(null, {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
-      body: 'Couldn\'t update the todo item.',
+      body: 'Couldn\'t update the cart item.',
     });
     return;
   }
@@ -23,22 +23,24 @@ module.exports.update = (event, context, callback) => {
       id: event.pathParameters.id,
     },
     ExpressionAttributeNames: {
-      '#todo_firstname': 'firstname',
-      '#todo_lastname':'lastname',
-      '#todo_email':'email',
-      '#todo_items':'items',
+      '#cart_firstname': 'firstname',
+      '#cart_lastname':'lastname',
+      '#cart_email':'email',
+      '#cart_items': 'items',
+      '#cart_order_status': 'order_status',
     },
     ExpressionAttributeValues: {
       ':firstname': data.firstname,
       ':lastname': data.lastname,
       ':email': data.email,
       ':items': data.items,
+      ':order_status': data.order_status
     },
-    UpdateExpression: 'SET #todo_firstname =:firstname, #todo_lastname = :lastname, #todo_email = :email, #todo_items = :items', //'SET #todo_text = :text, checked = :checked, updatedAt = :updatedAt',
+    UpdateExpression: 'SET #cart_firstname =:firstname, #cart_lastname = :lastname, #cart_email = :email, #cart_order_status = :order_status, #cart_items = :items', //'SET #cart_text = :text, checked = :checked, updatedAt = :updatedAt',
     ReturnValues: 'ALL_NEW',
   };
 
-  // update the todo in the database
+  // update the cart in the database
   dynamodb.update(params, (error, result) => {
     // handle potential errors
     if (error) {
@@ -46,7 +48,7 @@ module.exports.update = (event, context, callback) => {
       callback(null, {
         statusCode: error.statusCode || 501,
         headers: { 'Content-Type': 'text/plain' },
-        body: 'Couldn\'t update the todo item.',
+        body: 'Couldn\'t update the cart item.',
       });
       return;
     }

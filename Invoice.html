@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+
+table, td, th {
+  border: 1px solid #ddd;
+  padding: 5px;
+  border-collapse: collapse;
+  width: 30%;
+}
+
+ tr:nth-child(even){background-color: #f2f2f2;}
+
+ tr:hover {background-color: #ddd;}
+
+ th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+  background-color: red;
+  color: white;
+}
+
+</style>
+</head>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+
+<body>
+
+<h3>Invoice</h3>
+
+
+
+
+<p>Enter ID in the field, then click "Submit" to get the invoice:</p>
+<form id="frm1" action="/action_page.php">
+  ID: <input type="text" name="fname">
+  <input type="button" onclick="getInvoice()" value="Submit">
+</form>
+<p id="demo"></p>
+<div id="editor"></div>
+<!-- <button id="cmd">generate PDF</button> -->
+<script>
+
+//let url = 'https://yxv1s6sl90.execute-api.us-east-1.amazonaws.com/dev/cart/confirmation/f52c4b70-437b-11e9-bf21-09e253673f94';
+
+function getInvoice(){
+	var x = document.getElementById("frm1");
+	//console.log(x.elements[0].value)
+	
+	var str = "<table><th>Product</th><th>Qty</th><th>Price</th></th></tr>";
+	var qty_s = 0;
+	var price_s = 0;
+	//test with id in url
+	//fetch('https://yxv1s6sl90.execute-api.us-east-1.amazonaws.com/dev/cart/confirmation/f52c4b70-437b-11e9-bf21-09e253673f94')
+	
+	fetch('https://yxv1s6sl90.execute-api.us-east-1.amazonaws.com/dev/cart/confirmation/' + x.elements[0].value)
+		.then(res => res.json())
+		.then((out) => {
+			//console.log('Output: ', out);
+			//console.log(out.length)
+			//console.log(out.date)
+			for(var i = 0; i < out.items.length; i++)
+			{
+			str += "<tr><td>"+out.items[i].product + "</td><td>" + out.items[i].qty +"</td><td>"+ out.items[i].price+"</tr></td>";
+			qty_s += out.items[i].qty;
+			price_s += out.items[i].price * out.items[i].qty;
+			}
+			str += "<tr><td></td><td><strong>"+qty_s+"</strong></td><td><strong>"+price_s+" $</strong></td></tr></table>";
+			document.getElementById("demo").innerHTML = out.firstname + "<br>" + out.lastname + "<br>" + out.email+ "<br><br>"+str;
+	//}).catch(err => console.error(err));
+	}).catch(err => document.getElementById("demo").innerHTML = "<strong><span style=" + "'" +"color:red" + "'" + ">Wrong Id try again!</span>");
+
+
+
+	//var txt = '{"firstname":"John","lastname":"Smith","order_status":"complete","email":"john.smith@mail.com","id":"f52c4b70-437b-11e9-bf21-09e253673f94","items":[{"product":"Corona","id":3,"price":2.5,"qty":1},{"product":"Guinnes","id":3,"price":3.7,"qty":2}]}'
+	//var obj = JSON.parse(txt);
+}
+var doc = new jsPDF();
+var specialElementHandlers = {
+    '#editor': function (element, renderer) {
+        return true;
+    }
+};
+
+$('#cmd').click(function () {
+    doc.fromHTML($('#demo').html(), 15, 15, {
+        'width': 170,
+            'elementHandlers': specialElementHandlers
+    });
+    doc.save('sample-file.pdf');
+});
+</script>
+
+</body>
+</html>
